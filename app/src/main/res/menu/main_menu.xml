@@ -7,4 +7,10 @@
         android:title="@string/new_event"
         app:showAsAction="ifRoom|withText"
         />
+    <item
+        android:id="@+id/menu_item_map"
+        android:icon="@android:drawable/ic_dialog_map"
+        android:title="@string/open_map"
+        app:showAsAction="ifRoom|withText"
+        />
 </menu>

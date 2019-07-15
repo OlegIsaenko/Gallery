@@ -2,7 +2,9 @@ package com.example.gallery;
 
 import androidx.fragment.app.FragmentActivity;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
@@ -11,6 +13,8 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -44,7 +48,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         UUID uuid = (UUID) getIntent().getSerializableExtra(EXTRA_UUID);
-        mEvent = EventLab.get(this).getEvent(uuid);
+        if (uuid != null) {
+            mEvent = EventLab.get(this).getEvent(uuid);
+        }
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -64,6 +70,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    Activity#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for Activity#requestPermissions for more details.
+            return;
+        }
+        mMap.setMyLocationEnabled(true);
         final List<EventPhoto> events = EventLab.get(this).getEvents();
         for (EventPhoto event : events) {
             File photoFile = EventLab.get(this).getPhotoFile(event);
@@ -75,10 +92,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     BitmapDescriptorFactory.fromBitmap(icon)
             ).snippet(event.getDescription()));
         }
-        LatLng center = new LatLng(mEvent.getLat(), mEvent.getLng());
-        Log.i(TAG, "onMapReady: " + mEvent.getLat() + " + " + mEvent.getLng() );
+        mMap.getUiSettings().setMyLocationButtonEnabled(true);
         mMap.moveCamera(CameraUpdateFactory.zoomTo(14));
-        mMap.animateCamera(CameraUpdateFactory.newLatLng(center));
+        if (mEvent != null) {
+            LatLng center = new LatLng(mEvent.getLat(), mEvent.getLng());
+            mMap.animateCamera(CameraUpdateFactory.newLatLng(center));
+        } else {
+            LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+            Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            LatLng mylocation = new LatLng(location.getLatitude(), location.getLongitude());
+            mMap.animateCamera(CameraUpdateFactory.newLatLng(mylocation));
+        }
+
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {

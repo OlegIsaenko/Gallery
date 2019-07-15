@@ -76,7 +76,6 @@ public class EventListFragment extends Fragment {
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.main_menu, menu);
-        MenuItem newEventItem = menu.findItem(R.id.menu_item_new_event);
     }
 
     @Override
@@ -85,6 +84,12 @@ public class EventListFragment extends Fragment {
             case R.id.menu_item_new_event:
                 Intent intent = new Intent(getActivity(), NewEventActivity.class);
                 startActivity(intent);
+                return true;
+
+            case R.id.menu_item_map:
+                Intent mapIntent = new Intent(getActivity(), MapsActivity.class);
+                mapIntent.putExtra("mylocation", true);
+                startActivity(mapIntent);
                 return true;
 
                 default:
