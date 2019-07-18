@@ -34,6 +34,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.gallery.model.EventLab;
 import com.example.gallery.model.EventPhoto;
+import com.example.gallery.utils.GeocoderTest;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -147,6 +148,14 @@ public class AddEventFragment extends Fragment {
         setHasOptionsMenu(true);
 
         mPhotoView = (ImageView) view.findViewById(R.id.add_photo);
+        mPhotoView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), FullPhotoActivity.class);
+                intent.putExtra(FullPhotoActivity.EXTRA_FILE_NAME, mPhotoFile);
+                startActivity(intent);
+            }
+        });
         updatePhotoView();
         mImageLocation = (TextView) view.findViewById(R.id.image_location_text);
         mImageLocation.setText(eventLocation);

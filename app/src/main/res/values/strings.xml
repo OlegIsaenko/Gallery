@@ -3,7 +3,7 @@
     <string name="new_event">New event</string>
     <string name="event_title_hint">enter title</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="delete_event">delete event</string>
+    <string name="delete_event">Delete event</string>
     <string name="send_event">send</string>
     <string name="event_subject">event</string>
     <string name="send_report">event report</string>
@@ -14,4 +14,9 @@
     <string name="title_activity_maps">Map</string>
     <string name="open_map">open map</string>
     <string name="gps_not_enabled">GPS not enabled</string>
+    <string name="update_event">Edit event</string>
+
+    <string name="title_activity_fullscreen">FullscreenActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>

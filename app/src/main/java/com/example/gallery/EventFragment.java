@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,15 +26,14 @@ import com.squareup.picasso.Picasso;
 import java.io.File;
 import java.util.UUID;
 
-public class EventPhotoFragment extends Fragment {
+public class EventFragment extends Fragment {
 
     private static final String ARG_EVENT_ID = "crime_id";
     private static final String TAG = "tag";
-    private static final String DIALOG_PHOTO = "DialogPhoto";
 
     private static final int REQUEST_PHOTO = 3;
 
-    private EventPhoto mEventPhoto;
+    private EventPhoto mEvent;
     private TextView mPhotoLocation;
     private ImageView mPhotoView;
     private TextView mTitle;
@@ -48,15 +46,15 @@ public class EventPhotoFragment extends Fragment {
         setHasOptionsMenu(true);
 
         UUID eventId = (UUID) getArguments().getSerializable(ARG_EVENT_ID);
-        mEventPhoto = EventLab.get(getActivity()).getEvent(eventId);
-        mPhotoFile = EventLab.get(getActivity()).getPhotoFile(mEventPhoto);
+        mEvent = EventLab.get(getActivity()).getEvent(eventId);
+        mPhotoFile = EventLab.get(getActivity()).getPhotoFile(mEvent);
     }
 
 
-    public static EventPhotoFragment newInstance(UUID uuid) {
+    public static EventFragment newInstance(UUID uuid) {
         Bundle args = new Bundle();
         args.putSerializable(ARG_EVENT_ID, uuid);
-        EventPhotoFragment fragment = new EventPhotoFragment();
+        EventFragment fragment = new EventFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -71,7 +69,7 @@ public class EventPhotoFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_item_delete_event:
-                EventLab.get(getActivity()).deleteEvent(mEventPhoto);
+                EventLab.get(getActivity()).deleteEvent(mEvent);
                 getActivity().finish();
                 return true;
 
@@ -79,14 +77,17 @@ public class EventPhotoFragment extends Fragment {
                 Uri photo = FileProvider.getUriForFile(getActivity(), AddEventFragment.FILE_PROVIDER, mPhotoFile);
                 Intent i = ShareCompat.IntentBuilder.from(getActivity())
                         .setType("text/plain")
-                        .setText(mEventPhoto.getDescription() +
+                        .setText(mEvent.getDescription() +
                                 "\n----------------------------\n" +
-                                mEventPhoto.getLocation())
-                        .setSubject(mEventPhoto.getTitle())
+                                mEvent.getLocation())
+                        .setSubject(mEvent.getTitle())
                         .setStream(photo)
                         .getIntent();
                 i = Intent.createChooser(i, getString(R.string.send_report));
                 startActivity(i);
+
+            case R.id.menu_item_update_event:
+
 
             default:
                 return super.onOptionsItemSelected(item);
@@ -96,14 +97,14 @@ public class EventPhotoFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_photo_event, container, false);
+        View view = inflater.inflate(R.layout.fragment_event, container, false);
         mPhotoView = (ImageView) view.findViewById(R.id.event_photo);
 
         mPhotoView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), FullPhotoActivity.class);
-                intent.putExtra("photoFile", mPhotoFile);
+                intent.putExtra(FullPhotoActivity.EXTRA_FILE_NAME, mPhotoFile);
                 startActivity(intent);
             }
         });
@@ -112,17 +113,17 @@ public class EventPhotoFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), MapsActivity.class);
-                intent.putExtra(MapsActivity.EXTRA_UUID, mEventPhoto.getUUID());
+                intent.putExtra(MapsActivity.EXTRA_UUID, mEvent.getUUID());
                 startActivity(intent);
             }
         });
         updatePhotoView();
 
         mTitle = (TextView) view.findViewById(R.id.event_title);
-        mTitle.setText(mEventPhoto.getTitle());
+        mTitle.setText(mEvent.getTitle());
 
         mDescription = (TextView) view.findViewById(R.id.event_description);
-        mDescription.setText(mEventPhoto.getDescription());
+        mDescription.setText(mEvent.getDescription());
 
         return view;
     }
@@ -134,13 +135,13 @@ public class EventPhotoFragment extends Fragment {
         } else {
             Picasso.get().load(mPhotoFile).into(mPhotoView);
         }
-        mPhotoLocation.setText(mEventPhoto.getLocation());
+        mPhotoLocation.setText(mEvent.getLocation());
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        EventLab.get(getActivity()).updateEvent(mEventPhoto);
+        EventLab.get(getActivity()).updateEvent(mEvent);
     }
 
     @Override

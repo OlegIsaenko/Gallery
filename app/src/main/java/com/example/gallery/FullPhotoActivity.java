@@ -1,36 +1,31 @@
 package com.example.gallery;
 
+import android.app.Activity;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
+import com.jsibbold.zoomage.ZoomageView;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
 
-public class FullPhotoActivity extends AppCompatActivity {
+public class FullPhotoActivity extends Activity {
     private File mPhotoFile;
-    private ImageView mImageView;
+    private ZoomageView mZoomageView;
+    public static final String EXTRA_FILE_NAME = "photoFileName";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.full_photo_activity);
-        getSupportActionBar().hide();
-//        mEventPhoto = EventLab.get(this).getEvent((UUID) getIntent().getSerializableExtra("UUID"));
-        mPhotoFile = (File) getIntent().getSerializableExtra("photoFile");
-        mImageView = (ImageView) findViewById(R.id.full_photo_view);
-        Picasso.get().load(mPhotoFile).into(mImageView);
-        mImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        mPhotoFile = (File) getIntent().getSerializableExtra(EXTRA_FILE_NAME);
+        mZoomageView = (ZoomageView) findViewById(R.id.zoom_view_image);
+        Picasso.get().load(mPhotoFile).into(mZoomageView);
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 }

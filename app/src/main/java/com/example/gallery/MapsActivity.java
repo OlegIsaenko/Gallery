@@ -19,6 +19,7 @@ import androidx.fragment.app.FragmentActivity;
 
 import com.example.gallery.model.EventLab;
 import com.example.gallery.model.EventPhoto;
+import com.example.gallery.utils.PictureUtils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;

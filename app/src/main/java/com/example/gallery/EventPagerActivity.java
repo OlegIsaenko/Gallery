@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
+
 import com.example.gallery.model.EventLab;
 import com.example.gallery.model.EventPhoto;
 import java.util.List;
@@ -38,7 +39,7 @@ public class EventPagerActivity extends AppCompatActivity {
             @Override
             public Fragment getItem(int position) {
                 EventPhoto eventPhoto = mPhotos.get(position);
-                return EventPhotoFragment.newInstance(eventPhoto.getUUID());
+                return EventFragment.newInstance(eventPhoto.getUUID());
             }
 
             @Override

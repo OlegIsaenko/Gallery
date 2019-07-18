@@ -3,7 +3,6 @@ package com.example.gallery;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -21,6 +20,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.gallery.activities.NewEventActivity;
 import com.example.gallery.model.EventLab;
 import com.example.gallery.model.EventPhoto;
 import com.squareup.picasso.Picasso;

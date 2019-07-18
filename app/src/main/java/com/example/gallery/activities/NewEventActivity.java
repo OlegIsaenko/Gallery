@@ -1,9 +1,8 @@
-package com.example.gallery;
+package com.example.gallery.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
-import android.os.Bundle;
+import com.example.gallery.AddEventFragment;
 
 public class NewEventActivity extends SingleFragmentActivity {
 
