@@ -23,6 +23,7 @@ public class EventCursorWrapper extends CursorWrapper {
         String title = getString(getColumnIndex(EventDbShema.EventTable.Cols.TITLE));
         long date = getLong(getColumnIndex(EventDbShema.EventTable.Cols.DATE));
         String description = getString(getColumnIndex(EventDbShema.EventTable.Cols.DESCRIPTION));
+        String location = getString(getColumnIndex(EventDbShema.EventTable.Cols.LOCATION));
         double latitude = getDouble(getColumnIndex(EventDbShema.EventTable.Cols.LATITUDE));
         double longitude = getDouble(getColumnIndex(EventDbShema.EventTable.Cols.LONGITUDE));
 
@@ -30,6 +31,7 @@ public class EventCursorWrapper extends CursorWrapper {
         event.setTitle(title);
         event.setDate(new Date(date));
         event.setDescription(description);
+        event.setLocationText(location);
         event.setLat(latitude);
         event.setLng(longitude);
 

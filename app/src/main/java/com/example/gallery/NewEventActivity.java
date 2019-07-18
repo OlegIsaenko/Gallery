@@ -9,6 +9,6 @@ public class NewEventActivity extends SingleFragmentActivity {
 
     @Override
     protected Fragment createFragment() {
-        return new AddEventFragment();
+        return AddEventFragment.newInstance();
     }
 }

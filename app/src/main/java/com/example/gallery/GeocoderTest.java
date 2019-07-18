@@ -9,9 +9,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class GeocoderTest {
-//    public GeocoderTest newInstance() {
-//        return new GeocoderTest();
-//    }
+
 
     public String coordsToAddres(Context context, Location location) {
         Geocoder gc = new Geocoder(context);

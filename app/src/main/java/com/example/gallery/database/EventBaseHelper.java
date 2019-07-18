@@ -21,6 +21,7 @@ public class EventBaseHelper extends SQLiteOpenHelper {
                         EventDbShema.EventTable.Cols.TITLE + ", " +
                         EventDbShema.EventTable.Cols.DATE + ", " +
                         EventDbShema.EventTable.Cols.DESCRIPTION + ", " +
+                        EventDbShema.EventTable.Cols.LOCATION + ", " +
                         EventDbShema.EventTable.Cols.LATITUDE + ", " +
                         EventDbShema.EventTable.Cols.LONGITUDE +
                 ")"

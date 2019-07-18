@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.UUID;
 
 public class EventPhoto {
+
     private UUID mUUID;
     private String title;
     private Date mDate;
@@ -63,7 +64,7 @@ public class EventPhoto {
         return mLocation;
     }
 
-    public void setLocation(String location) {
+    public void setLocationText(String location) {
         mLocation = location;
     }
 
@@ -87,12 +88,12 @@ public class EventPhoto {
         return "IMG_" + getUUID().toString() + ".jpg";
     }
 
-    public void setupLocation(Location location) {
+    public void setLatLng(Location location) {
         if (location != null) {
             this.setLat(location.getLatitude());
             this.setLng(location.getLongitude());
         } else {
-            Log.i(TAG, "setupLocation: null location");
+            Log.i(TAG, "setLatLng: null location");
         }
     }
 }

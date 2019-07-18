@@ -85,6 +85,7 @@ public class EventLab {
     public void deleteEvent(EventPhoto eventPhoto) {
         mDatabase.delete(EventDbShema.EventTable.NAME, EventDbShema.EventTable.Cols.UUID + " = ?",
                 new String[]{eventPhoto.getUUID().toString()});
+        getPhotoFile(eventPhoto).delete();
     }
 
     private static ContentValues getContentValues(EventPhoto eventPhoto) {
@@ -93,6 +94,7 @@ public class EventLab {
         contentValues.put(EventDbShema.EventTable.Cols.TITLE, eventPhoto.getTitle());
         contentValues.put(EventDbShema.EventTable.Cols.DATE, eventPhoto.getDate().getTime());
         contentValues.put(EventDbShema.EventTable.Cols.DESCRIPTION, eventPhoto.getDescription());
+        contentValues.put(EventDbShema.EventTable.Cols.LOCATION, eventPhoto.getLocation());
         contentValues.put(EventDbShema.EventTable.Cols.LATITUDE, eventPhoto.getLat());
         contentValues.put(EventDbShema.EventTable.Cols.LONGITUDE, eventPhoto.getLng());
         return contentValues;

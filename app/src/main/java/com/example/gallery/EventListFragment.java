@@ -88,7 +88,7 @@ public class EventListFragment extends Fragment {
 
             case R.id.menu_item_map:
                 Intent mapIntent = new Intent(getActivity(), MapsActivity.class);
-                mapIntent.putExtra("mylocation", true);
+//                mapIntent.putExtra("mylocation", true);
                 startActivity(mapIntent);
                 return true;
 
