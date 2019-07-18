@@ -32,7 +32,7 @@ public class EventPagerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_pager);
         final UUID eventId = (UUID) getIntent().getSerializableExtra(EXTRA_EVENT_ID);
-        mViewPager = (ViewPager) findViewById(R.id.activity_event_view_pager);
+        mViewPager = findViewById(R.id.activity_event_view_pager);
         mPhotos = EventLab.get(this).getEvents();
         mViewPager.setAdapter(new FragmentStatePagerAdapter(getSupportFragmentManager()) {
             @NonNull

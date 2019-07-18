@@ -20,7 +20,7 @@ public class FullPhotoActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.full_photo_activity);
         mPhotoFile = (File) getIntent().getSerializableExtra(EXTRA_FILE_NAME);
-        mZoomageView = (ZoomageView) findViewById(R.id.zoom_view_image);
+        mZoomageView = findViewById(R.id.zoom_view_image);
         Picasso.get().load(mPhotoFile).into(mZoomageView);
     }
 

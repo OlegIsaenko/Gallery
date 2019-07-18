@@ -147,7 +147,7 @@ public class AddEventFragment extends Fragment {
         setRetainInstance(true);
         setHasOptionsMenu(true);
 
-        mPhotoView = (ImageView) view.findViewById(R.id.add_photo);
+        mPhotoView = view.findViewById(R.id.add_photo);
         mPhotoView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -157,7 +157,7 @@ public class AddEventFragment extends Fragment {
             }
         });
         updatePhotoView();
-        mImageLocation = (TextView) view.findViewById(R.id.image_location_text);
+        mImageLocation = view.findViewById(R.id.image_location_text);
         mImageLocation.setText(eventLocation);
         mImageLocation.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -167,7 +167,7 @@ public class AddEventFragment extends Fragment {
             }
         });
 
-        mTitle = (EditText) view.findViewById(R.id.add_title);
+        mTitle = view.findViewById(R.id.add_title);
         mTitle.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -185,7 +185,7 @@ public class AddEventFragment extends Fragment {
             }
         });
 
-        mDescription = (EditText) view.findViewById(R.id.add_description);
+        mDescription = view.findViewById(R.id.add_description);
         mDescription.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -203,7 +203,7 @@ public class AddEventFragment extends Fragment {
             }
         });
 
-        mAddLocationButton = (Button) view.findViewById(R.id.get_location_button);
+        mAddLocationButton = view.findViewById(R.id.get_location_button);
         mAddLocationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

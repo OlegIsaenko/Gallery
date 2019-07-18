@@ -44,7 +44,6 @@ public class EventFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-
         UUID eventId = (UUID) getArguments().getSerializable(ARG_EVENT_ID);
         mEvent = EventLab.get(getActivity()).getEvent(eventId);
         mPhotoFile = EventLab.get(getActivity()).getPhotoFile(mEvent);
@@ -98,7 +97,7 @@ public class EventFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_event, container, false);
-        mPhotoView = (ImageView) view.findViewById(R.id.event_photo);
+        mPhotoView = view.findViewById(R.id.event_photo);
 
         mPhotoView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,7 +107,7 @@ public class EventFragment extends Fragment {
                 startActivity(intent);
             }
         });
-        mPhotoLocation = (TextView) view.findViewById(R.id.image_location_text);
+        mPhotoLocation = view.findViewById(R.id.image_location_text);
         mPhotoLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -119,10 +118,10 @@ public class EventFragment extends Fragment {
         });
         updatePhotoView();
 
-        mTitle = (TextView) view.findViewById(R.id.event_title);
+        mTitle = view.findViewById(R.id.event_title);
         mTitle.setText(mEvent.getTitle());
 
-        mDescription = (TextView) view.findViewById(R.id.event_description);
+        mDescription = view.findViewById(R.id.event_description);
         mDescription.setText(mEvent.getDescription());
 
         return view;
@@ -151,7 +150,7 @@ public class EventFragment extends Fragment {
         }
         if (requestCode == REQUEST_PHOTO) {
             updatePhotoView();
-            mTitle.setText("new title");
+            mTitle.setText(R.string.enter_new_title);
         }
     }
 }

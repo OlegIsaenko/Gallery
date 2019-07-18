@@ -124,9 +124,9 @@ public class EventListFragment extends Fragment {
         public EventHolder(View eventView) {
             super(eventView);
             eventView.setOnClickListener(this);
-            mImageView = (ImageView) eventView.findViewById(R.id.photo_list_image_view);
-            mTextView = (TextView) eventView.findViewById(R.id.photo_list_text_view);
-            mDescription = (TextView) eventView.findViewById(R.id.photo_list_description_view);
+            mImageView = eventView.findViewById(R.id.photo_list_image_view);
+            mTextView = eventView.findViewById(R.id.photo_list_text_view);
+            mDescription = eventView.findViewById(R.id.photo_list_description_view);
 
         }
 
