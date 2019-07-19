@@ -46,7 +46,7 @@
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps" />
         <activity
-            android:name=".activities.NewEventActivity"
+            android:name=".activities.AddEventActivity"
             android:parentActivityName=".activities.EventListActivity" />
         <activity android:name=".activities.EventListActivity">
             <intent-filter>
@@ -55,11 +55,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".EventPagerActivity"
-            android:parentActivityName=".activities.EventListActivity" />
         <activity android:name=".FullPhotoActivity"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"/>
+        <activity android:name=".EventActivity" />
     </application>
 
 </manifest>

@@ -4,7 +4,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.gallery.AddEventFragment;
 
-public class NewEventActivity extends SingleFragmentActivity {
+public class AddEventActivity extends SingleFragmentActivity {
 
     @Override
     protected Fragment createFragment() {

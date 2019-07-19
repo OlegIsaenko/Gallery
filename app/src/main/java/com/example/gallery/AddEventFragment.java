@@ -33,7 +33,7 @@ import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
 import com.example.gallery.model.EventLab;
-import com.example.gallery.model.EventPhoto;
+import com.example.gallery.model.Event;
 import com.example.gallery.utils.GeocoderTest;
 import com.squareup.picasso.Picasso;
 
@@ -231,7 +231,7 @@ public class AddEventFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_item_add_event:
-                EventPhoto eventPhoto = new EventPhoto();
+                Event eventPhoto = new Event();
                 eventPhoto.setTitle(eventTitle);
                 eventPhoto.setDescription(eventDescription);
                 eventPhoto.setLatLng(mLocation);

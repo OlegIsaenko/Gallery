@@ -18,7 +18,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 
 import com.example.gallery.model.EventLab;
-import com.example.gallery.model.EventPhoto;
+import com.example.gallery.model.Event;
 import com.example.gallery.utils.PictureUtils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -41,7 +41,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         GoogleApiClient.OnConnectionFailedListener {
 
     private GoogleMap mMap;
-    private EventPhoto mEvent;
+    private Event mEvent;
 
     private GoogleApiClient googleApiClient;
 
@@ -95,8 +95,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
 
 
-        final List<EventPhoto> events = EventLab.get(this).getEvents();
-        for (EventPhoto event : events) {
+        final List<Event> events = EventLab.get(this).getEvents();
+        for (Event event : events) {
             File photoFile = EventLab.get(this).getPhotoFile(event);
             Bitmap bitmap = PictureUtils.getScaledBitmap(photoFile.getPath(), this);
             Bitmap icon = Bitmap.createScaledBitmap(bitmap, 150, 150, true);
@@ -120,10 +120,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                for (EventPhoto eventPhoto : events) {
+                for (Event eventPhoto : events) {
                     LatLng position = new LatLng(eventPhoto.getLat(), eventPhoto.getLng());
                     if (marker.getPosition().equals(position)) {
-                        Intent intent = EventPagerActivity.newIntent(MapsActivity.this, eventPhoto.getUUID());
+                        Intent intent = new Intent(MapsActivity.this, EventActivity.class);
+                        intent.putExtra(EventActivity.EXTRA_EVENT_ID, mEvent.getUUID());
                         startActivity(intent);
                     }
                 }
@@ -134,13 +135,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private void getMyLocation() {
         if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    Activity#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for Activity#requestPermissions for more details.
+            requestPermissions(
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    PackageManager.PERMISSION_GRANTED);
             return;
         }
         Location location = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
@@ -155,39 +152,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
         mMap.getUiSettings().setZoomControlsEnabled(true);
     }
-
-//    private void updateLocation (Location location) {
-//        if (location == null) {
-//            Toast.makeText(this, R.string.gps_not_enabled, Toast.LENGTH_SHORT).show();
-//            return;
-//        }
-//        mLocation = location;
-//        LatLng myLocation = new LatLng(mLocation.getLatitude(), mLocation.getLongitude());
-//        mMap.moveCamera(CameraUpdateFactory.zoomTo(14));
-//        mMap.animateCamera(CameraUpdateFactory.newLatLng(myLocation));
-//    }
-
-
-
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        if (checkSelfPermission(
-//                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//            requestPermissions(
-//                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-//                    PackageManager.PERMISSION_GRANTED);
-//            return;
-//        }
-//        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, mLocationListener);
-//        mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, mLocationListener);
-//    }
-//
-//    @Override
-//    protected void onPause() {
-//        super.onPause();
-//        mLocationManager.removeUpdates(mLocationListener);
-//    }
 
     private static Bitmap getRoundedCornerBitmap(Bitmap bitmap, int radius) {
         Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap
@@ -238,6 +202,5 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (googleApiClient != null) {
             googleApiClient.disconnect();
         }
-
     }
 }

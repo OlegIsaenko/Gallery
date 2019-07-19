@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Environment;
+import android.util.Log;
 
 import com.example.gallery.database.EventBaseHelper;
 import com.example.gallery.database.EventCursorWrapper;
@@ -14,6 +15,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import static com.example.gallery.MapsActivity.TAG;
 
 public class EventLab {
     private static EventLab sEventLab;
@@ -32,7 +35,7 @@ public class EventLab {
         return sEventLab;
     }
 
-    public EventPhoto getEvent(UUID uuid) {
+    public Event getEvent(UUID uuid) {
         EventCursorWrapper cursor = queryEvents(
                 EventDbShema.EventTable.Cols.UUID + " = ?",
                 new String[]{uuid.toString()}
@@ -50,8 +53,8 @@ public class EventLab {
         }
     }
 
-    public List<EventPhoto> getEvents() {
-        List<EventPhoto> eventPhotos = new ArrayList<>();
+    public List<Event> getEvents() {
+        List<Event> eventPhotos = new ArrayList<>();
 
         EventCursorWrapper cursor = queryEvents(null, null);
 
@@ -68,27 +71,29 @@ public class EventLab {
         return eventPhotos;
     }
 
-    public void addEvent(EventPhoto eventPhoto) {
+    public void addEvent(Event eventPhoto) {
         ContentValues contentValues = getContentValues(eventPhoto);
         mDatabase.insert(EventDbShema.EventTable.NAME, null, contentValues);
     }
 
-    public void updateEvent(EventPhoto eventPhoto) {
+    public void updateEvent(Event eventPhoto) {
         String uuid = eventPhoto.getUUID().toString();
         ContentValues contentValues = getContentValues(eventPhoto);
 
         mDatabase.update(EventDbShema.EventTable.NAME, contentValues,
                 EventDbShema.EventTable.Cols.UUID + " = ?",
                 new String[]{uuid});
+        Log.i(TAG, "updateEvent: " + eventPhoto.toString());
     }
 
-    public void deleteEvent(EventPhoto eventPhoto) {
+    public void deleteEvent(Event eventPhoto) {
         mDatabase.delete(EventDbShema.EventTable.NAME, EventDbShema.EventTable.Cols.UUID + " = ?",
                 new String[]{eventPhoto.getUUID().toString()});
         getPhotoFile(eventPhoto).delete();
+
     }
 
-    private static ContentValues getContentValues(EventPhoto eventPhoto) {
+    private static ContentValues getContentValues(Event eventPhoto) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(EventDbShema.EventTable.Cols.UUID, eventPhoto.getUUID().toString());
         contentValues.put(EventDbShema.EventTable.Cols.TITLE, eventPhoto.getTitle());
@@ -106,11 +111,15 @@ public class EventLab {
         return new EventCursorWrapper(cursor);
     }
 
-    public File getPhotoFile(EventPhoto eventPhoto) {
+    public File getPhotoFile(Event eventPhoto) {
         File externalFilesDir = mContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         if (externalFilesDir == null) {
             return null;
         }
         return new File(externalFilesDir, eventPhoto.getPhotoFileName());
+    }
+
+    public void update() {
+
     }
 }

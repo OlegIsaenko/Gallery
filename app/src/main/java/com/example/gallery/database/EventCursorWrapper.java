@@ -3,7 +3,7 @@ package com.example.gallery.database;
 import android.database.Cursor;
 import android.database.CursorWrapper;
 
-import com.example.gallery.model.EventPhoto;
+import com.example.gallery.model.Event;
 
 import java.util.Date;
 import java.util.UUID;
@@ -18,7 +18,7 @@ public class EventCursorWrapper extends CursorWrapper {
         super(cursor);
     }
 
-    public EventPhoto getEvent() {
+    public Event getEvent() {
         String uuid = getString(getColumnIndex(EventDbShema.EventTable.Cols.UUID));
         String title = getString(getColumnIndex(EventDbShema.EventTable.Cols.TITLE));
         long date = getLong(getColumnIndex(EventDbShema.EventTable.Cols.DATE));
@@ -27,7 +27,7 @@ public class EventCursorWrapper extends CursorWrapper {
         double latitude = getDouble(getColumnIndex(EventDbShema.EventTable.Cols.LATITUDE));
         double longitude = getDouble(getColumnIndex(EventDbShema.EventTable.Cols.LONGITUDE));
 
-        EventPhoto event = new EventPhoto(UUID.fromString(uuid));
+        Event event = new Event(UUID.fromString(uuid));
         event.setTitle(title);
         event.setDate(new Date(date));
         event.setDescription(description);

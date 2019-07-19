@@ -1,16 +1,14 @@
 package com.example.gallery.model;
 
-import android.app.Activity;
 import android.location.Location;
 import android.util.Log;
-import android.widget.Toast;
 
-import androidx.core.app.ActivityCompat;
+import androidx.annotation.NonNull;
 
 import java.util.Date;
 import java.util.UUID;
 
-public class EventPhoto {
+public class Event {
 
     private UUID mUUID;
     private String title;
@@ -23,11 +21,11 @@ public class EventPhoto {
     private static final String TAG = "tag";
 
 
-    public EventPhoto() {
+    public Event() {
         this(UUID.randomUUID());
     }
 
-    public EventPhoto(UUID uuid) {
+    public Event(UUID uuid) {
         mUUID = uuid;
         mDate = new Date();
     }
@@ -95,5 +93,11 @@ public class EventPhoto {
         } else {
             Log.i(TAG, "setLatLng: null location");
         }
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return getTitle() + ", " + getDescription() + ", " + getUUID();
     }
 }

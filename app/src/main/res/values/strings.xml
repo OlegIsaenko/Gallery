@@ -20,4 +20,9 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="enter_new_title">new title</string>
+    <string name="edit_description">description</string>
+    <string name="edit_title_hint">edit title</string>
+    <string name="apply_changes_button">Confirm</string>
+    <string name="edit_title_label">Title:</string>
+    <string name="edit_description_label">description:</string>
 </resources>

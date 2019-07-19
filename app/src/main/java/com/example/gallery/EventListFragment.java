@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,9 +21,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.gallery.activities.NewEventActivity;
+import com.example.gallery.activities.AddEventActivity;
 import com.example.gallery.model.EventLab;
-import com.example.gallery.model.EventPhoto;
+import com.example.gallery.model.Event;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -30,7 +31,7 @@ import java.util.List;
 
 public class EventListFragment extends Fragment {
 
-    public static final String TAG = "hyeg";
+    public static final String TAG = "tag";
 
     private RecyclerView mEventRecyclerView;
     private EventAdapter mAdapter;
@@ -57,7 +58,7 @@ public class EventListFragment extends Fragment {
         linearLayoutManager.setReverseLayout(true);
         linearLayoutManager.setStackFromEnd(true);
         mEventRecyclerView.setLayoutManager(linearLayoutManager);
-        updateUI();
+
 
         return view;
     }
@@ -82,13 +83,12 @@ public class EventListFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_item_new_event:
-                Intent intent = new Intent(getActivity(), NewEventActivity.class);
+                Intent intent = new Intent(getActivity(), AddEventActivity.class);
                 startActivity(intent);
                 return true;
 
             case R.id.menu_item_map:
                 Intent mapIntent = new Intent(getActivity(), MapsActivity.class);
-//                mapIntent.putExtra("mylocation", true);
                 startActivity(mapIntent);
                 return true;
 
@@ -104,7 +104,10 @@ public class EventListFragment extends Fragment {
 
     private void updateUI() {
         EventLab eventLab = EventLab.get(getActivity());
-        List<EventPhoto> events = eventLab.getEvents();
+        List<Event> events = eventLab.getEvents();
+        for (Event event : events) {
+            Log.i(TAG, "updateUI: " + event + " \n");
+        }
 
         if (mAdapter == null) {
             mAdapter = new EventAdapter(events);
@@ -119,7 +122,7 @@ public class EventListFragment extends Fragment {
         private ImageView mImageView;
         private TextView mTextView;
         private TextView mDescription;
-        private EventPhoto mPhoto;
+        private Event mEvent;
 
         public EventHolder(View eventView) {
             super(eventView);
@@ -130,30 +133,31 @@ public class EventListFragment extends Fragment {
 
         }
 
-        public void bindEvent(EventPhoto eventPhoto) {
-            mPhoto = eventPhoto;
+        public void bindEvent(Event eventPhoto) {
+            mEvent = eventPhoto;
             File bitmap = EventLab.get(getActivity()).getPhotoFile(eventPhoto);
             if (bitmap != null) {
                 Picasso.get().load(bitmap).into(mImageView);
             } else {
                 mImageView.setImageDrawable(null);
             }
-            mTextView.setText(mPhoto.getTitle());
-            mDescription.setText(mPhoto.getDescription());
+            mTextView.setText(mEvent.getTitle());
+            mDescription.setText(mEvent.getDescription());
         }
 
         @Override
         public void onClick(View v) {
-            Intent intent = EventPagerActivity.newIntent(getActivity(), mPhoto.getUUID());
+            Intent intent = new Intent(getActivity(), EventActivity.class);
+            intent.putExtra(EventActivity.EXTRA_EVENT_ID, mEvent.getUUID());
             startActivity(intent);
         }
     }
 
 
     private class EventAdapter extends RecyclerView.Adapter<EventHolder> {
-        private List<EventPhoto> mPhotos;
+        private List<Event> mPhotos;
 
-        public EventAdapter(List<EventPhoto> photos) {
+        public EventAdapter(List<Event> photos) {
             mPhotos = photos;
         }
 
@@ -167,7 +171,7 @@ public class EventListFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull EventHolder holder, int position) {
-            EventPhoto eventPhoto = mPhotos.get(position);
+            Event eventPhoto = mPhotos.get(position);
             holder.bindEvent(eventPhoto);
         }
 
@@ -176,7 +180,7 @@ public class EventListFragment extends Fragment {
             return mPhotos.size();
         }
 
-        private void setEvents(List<EventPhoto> photos) {
+        private void setEvents(List<Event> photos) {
             mPhotos = photos;
         }
     }
