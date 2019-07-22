@@ -4,7 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,12 +18,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gallery.activities.AddEventActivity;
-import com.example.gallery.model.EventLab;
 import com.example.gallery.model.Event;
+import com.example.gallery.model.EventLab;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -53,11 +53,9 @@ public class EventListFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_photo_list, container, false);
-        mEventRecyclerView = (RecyclerView) view.findViewById(R.id.fragment_gallery_recycler_view);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-        linearLayoutManager.setReverseLayout(true);
-        linearLayoutManager.setStackFromEnd(true);
-        mEventRecyclerView.setLayoutManager(linearLayoutManager);
+        mEventRecyclerView = view.findViewById(R.id.fragment_gallery_recycler_view);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
+        mEventRecyclerView.setLayoutManager(gridLayoutManager);
 
 
         return view;
@@ -105,10 +103,6 @@ public class EventListFragment extends Fragment {
     private void updateUI() {
         EventLab eventLab = EventLab.get(getActivity());
         List<Event> events = eventLab.getEvents();
-        for (Event event : events) {
-            Log.i(TAG, "updateUI: " + event + " \n");
-        }
-
         if (mAdapter == null) {
             mAdapter = new EventAdapter(events);
             mEventRecyclerView.setAdapter(mAdapter);
@@ -127,9 +121,10 @@ public class EventListFragment extends Fragment {
         public EventHolder(View eventView) {
             super(eventView);
             eventView.setOnClickListener(this);
-            mImageView = eventView.findViewById(R.id.photo_list_image_view);
-            mTextView = eventView.findViewById(R.id.photo_list_text_view);
-            mDescription = eventView.findViewById(R.id.photo_list_description_view);
+
+            mImageView = eventView.findViewById(R.id.event_holder_view);
+//            mTextView = eventView.findViewById(R.id.photo_list_text_view);
+//            mDescription = eventView.findViewById(R.id.photo_list_description_view);
 
         }
 
@@ -137,12 +132,12 @@ public class EventListFragment extends Fragment {
             mEvent = eventPhoto;
             File bitmap = EventLab.get(getActivity()).getPhotoFile(eventPhoto);
             if (bitmap != null) {
-                Picasso.get().load(bitmap).into(mImageView);
+                Picasso.get().load(bitmap).resize(400, 400).into(mImageView);
             } else {
                 mImageView.setImageDrawable(null);
             }
-            mTextView.setText(mEvent.getTitle());
-            mDescription.setText(mEvent.getDescription());
+//            mTextView.setText(mEvent.getTitle());
+//            mDescription.setText(mEvent.getDescription());
         }
 
         @Override
@@ -165,13 +160,13 @@ public class EventListFragment extends Fragment {
         @Override
         public EventHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(getActivity());
-            View view = inflater.inflate(R.layout.event_holder_view, parent, false);
+            View view = inflater.inflate(R.layout.event_holder, parent, false);
             return new EventHolder(view);
         }
 
         @Override
         public void onBindViewHolder(@NonNull EventHolder holder, int position) {
-            Event eventPhoto = mPhotos.get(position);
+            Event eventPhoto = mPhotos.get((mPhotos.size() - 1) - position);
             holder.bindEvent(eventPhoto);
         }
 
