@@ -38,7 +38,6 @@ public class EditEventFragment extends Fragment {
         super.onCreate(savedInstanceState);
         UUID uuid = (UUID) getArguments().getSerializable(EXTRA_ID);
         mEvent = EventLab.get(getActivity()).getEvent(uuid);
-        setRetainInstance(true);
     }
 
     @Nullable

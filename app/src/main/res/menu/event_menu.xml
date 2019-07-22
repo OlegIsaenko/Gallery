@@ -6,7 +6,7 @@
         android:id="@+id/menu_item_send_event"
         android:icon="@android:drawable/ic_menu_send"
         android:title="@string/send_event"
-        app:showAsAction="ifRoom|withText"
+        app:showAsAction="always|withText"
         />
 
     <item

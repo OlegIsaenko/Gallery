@@ -35,7 +35,6 @@ public class EventActivity extends AppCompatActivity {
     private ImageView mPhotoView;
     private TextView mPhotoLocation;
     private File mPhotoFile;
-    private FragmentTransaction mTransaction;
     private boolean isEdit;
 
     @Override
@@ -46,8 +45,6 @@ public class EventActivity extends AppCompatActivity {
         if (savedInstanceState != null) {
             isEdit = savedInstanceState.getBoolean(EDIT_OR_NOT);
             Log.i(TAG, "onCreate: EDITED " + isEdit);
-        } else {
-            isEdit = false;
         }
 
         UUID eventId = (UUID) getIntent().getSerializableExtra(EXTRA_EVENT_ID);
@@ -75,11 +72,10 @@ public class EventActivity extends AppCompatActivity {
         });
         updatePhotoView();
 
-        Log.i(TAG, "onCreate: EDITED " + isEdit);
 
         if (!isEdit) {
             ViewEventFragment viewEventFragment = ViewEventFragment.newInstance(mEvent.getUUID());
-            mTransaction = getSupportFragmentManager().beginTransaction();
+            FragmentTransaction mTransaction = getSupportFragmentManager().beginTransaction();
             mTransaction.add(R.id.event_container, viewEventFragment);
             mTransaction.commit();
         }
@@ -104,12 +100,9 @@ public class EventActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_item_delete_event:
-                EventLab.get(this).deleteEvent(mEvent);
-                EventActivity.this.finish();
-                return true;
 
             case R.id.menu_item_send_event:
+                Log.i(TAG, "onCreate: send onclick " + isEdit);
                 Uri photo = FileProvider.getUriForFile(this, AddEventFragment.FILE_PROVIDER, mPhotoFile);
                 Intent i = ShareCompat.IntentBuilder.from(this)
                         .setType("text/plain")
@@ -121,14 +114,20 @@ public class EventActivity extends AppCompatActivity {
                         .getIntent();
                 i = Intent.createChooser(i, getString(R.string.send_report));
                 startActivity(i);
+                return true;
 
             case R.id.menu_item_update_event:
                 isEdit = true;
                 Log.i(TAG, "onCreate: EDITED onclick " + isEdit);
-                mTransaction = getSupportFragmentManager().beginTransaction();
+                FragmentTransaction mTransaction = getSupportFragmentManager().beginTransaction();
                 mTransaction.replace(R.id.event_container, EditEventFragment.newInstance(mEvent.getUUID()));
                 mTransaction.commit();
+                return true;
 
+            case R.id.menu_item_delete_event:
+                EventLab.get(this).deleteEvent(mEvent);
+                EventActivity.this.finish();
+                return true;
 
             default:
                 return super.onOptionsItemSelected(item);
