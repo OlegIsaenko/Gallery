@@ -122,9 +122,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public boolean onMarkerClick(Marker marker) {
                 for (Event eventPhoto : events) {
                     LatLng position = new LatLng(eventPhoto.getLat(), eventPhoto.getLng());
-                    if (marker.getPosition().equals(position)) {
+                    if (position.equals(marker.getPosition())) {
                         Intent intent = new Intent(MapsActivity.this, EventActivity.class);
-                        intent.putExtra(EventActivity.EXTRA_EVENT_ID, mEvent.getUUID());
+                        intent.putExtra(EventActivity.EXTRA_EVENT_ID, eventPhoto.getUUID());
                         startActivity(intent);
                     }
                 }
